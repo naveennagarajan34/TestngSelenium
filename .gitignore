@@ -10,8 +10,30 @@ buildNumber.properties
 # https://github.com/takari/maven-wrapper#usage-without-binary-jar
 .mvn/wrapper/maven-wrapper.jar
 
+*.class
+*.jar
+*.war
+*.ear
+
 # Eclipse m2e generated files
 # Eclipse Core
 .project
+.classpath
+.settings/
+bin/
 # JDT-specific (Eclipse Java Development Tools)
 .classpath
+
+screenshots/
+output/screenshots/
+test-output/screenshots
+
+test-output/
+allure-results/
+allure-report/
+surefire-reports/
+reports/
+extent-reports/
+
+.env
+config.propertie
