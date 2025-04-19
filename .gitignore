@@ -17,7 +17,6 @@ buildNumber.properties
 
 # Eclipse m2e generated files
 # Eclipse Core
-.project
 .classpath
 .settings/
 bin/
