@@ -1,7 +1,10 @@
 package toolsqa;
 
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.AfterGroups;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeClass;
-import org.testng.annotations.BeforeGroups;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.BeforeTest;
@@ -24,7 +27,7 @@ public class TestNgTags {
 		System.out.println("Before Test");
 	}
 
-	@Test(groups = { "smoke" })
+	@Test
 	public void method_4() {
 		System.out.println("Test_A");
 	}
@@ -34,27 +37,33 @@ public class TestNgTags {
 		System.out.println("BeforeMethod");
 	}
 
-	@BeforeGroups("regression")
+	@AfterClass
 	public void method_6() {
-		System.out.println("Before Groups");
+		System.out.println("After Class");
 	}
 
-	@Test(groups = { "smoke" })
+
+	@AfterMethod
 	public void method_8() {
 		System.out.println("Test_B");
 	}
 
-	@Test(groups = { "regression", "smoke" })
+
+	@AfterTest
 	public void method_7() {
-		System.out.println("Test_C");
+		System.out.println("After test");
 	}
 
-	@Test(groups = { "smoke" })
+	@AfterGroups
 	public void method_9() {
-		System.out.println("Test_D");
+		System.out.println("After Groups");
 	}
 
-	@Test(groups = { "regression" })
+	// priority is 0 by default
+	// priority execute from lower to higher
+	// if multiple same priorities then executed based on method name in ascending order
+	
+	@Test(priority=-1)
 	public void method_10() {
 		System.out.println("Test_E");
 	}
