@@ -1,5 +1,7 @@
 package me.clockify.app.testcase;
 
+import static org.testng.Assert.assertTrue;
+
 import java.time.Duration;
 
 import org.testng.annotations.Test;
@@ -14,13 +16,14 @@ public class TC_01_LoginWithGmail extends BaseClass {
 		HomePage home = new HomePage(driver);
 		home.ClickLoginWithGoogle();
 		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
-		
+
 		LoginPage login = new LoginPage(driver);
 		login.enterEmailId("naveen.n@ecgroup-intl.com");
-		login.clickNext();
-
+//		login.clickNext();
 
 		login.enterPassword("naveT23LMN");
 		login.clickNext();
+		
+		assertTrue(login.isLoginSuccessful());
 	}
 }
