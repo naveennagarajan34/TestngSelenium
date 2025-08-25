@@ -24,7 +24,8 @@ public class LoginPage extends BasePage {
 	WebElement passwordInput;
 
 	public void enterEmailId(String email) {
-		emailInput.sendKeys(email + Keys.ENTER);
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+		wait.until(ExpectedConditions.elementToBeClickable(emailInput)).sendKeys(email + Keys.ENTER);
 	}
 
 	public void enterPassword(String password) {

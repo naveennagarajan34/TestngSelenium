@@ -4,6 +4,7 @@ import java.time.Duration;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.testng.annotations.AfterClass;
@@ -15,10 +16,16 @@ public class BaseClass {
 
 	@BeforeClass
 	public void setupBrowser() {
-		String browser = "firefox";
+		String browser = "chrome";
 		switch (browser.toLowerCase()) {
 		case "chrome":
-			driver = new ChromeDriver();
+			ChromeOptions options = new ChromeOptions();
+			// Disable setup prompts
+			options.addArguments("--disable-sync");
+			options.addArguments("--no-first-run");
+			options.addArguments("--no-default-browser-check");
+			options.addArguments("--disable-component-update");
+			driver = new ChromeDriver(options);
 			break;
 		case "edge":
 			driver = new EdgeDriver();
@@ -39,6 +46,6 @@ public class BaseClass {
 
 	@AfterClass
 	public void cleanup() {
-		driver.quit();
+//		driver.quit();
 	}
 }

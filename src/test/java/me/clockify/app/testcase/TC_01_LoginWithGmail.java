@@ -19,9 +19,7 @@ public class TC_01_LoginWithGmail extends BaseClass {
 
 		LoginPage login = new LoginPage(driver);
 		login.enterEmailId("naveen.n@ecgroup-intl.com");
-//		login.clickNext();
-
-		login.enterPassword("naveT23LMN");
+		login.enterPassword("nave");
 		login.clickNext();
 		
 		assertTrue(login.isLoginSuccessful());
