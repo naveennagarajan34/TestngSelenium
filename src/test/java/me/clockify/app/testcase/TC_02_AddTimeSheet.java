@@ -34,7 +34,7 @@ public class TC_02_AddTimeSheet extends BaseClass {
 		}
 
 		if (!LoginUtility.isLoggedIn(driver)) {
-			LoginUtility.performLogin(driver, "naveen.n@ecgroup-intl.com", "naveT23LMN");
+			LoginUtility.performLogin(driver, "naveen.n@ecgroup-intl.com", "");
 		}
 
 		// Read data from Excel
