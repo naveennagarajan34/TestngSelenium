@@ -17,7 +17,7 @@ public class TC_02_AddTimeSheet extends BaseClass {
 		}
 
 		if (!LoginUtility.isLoggedIn(driver)) {
-			LoginUtility.performLogin(driver, "naveen.n@ecgroup-intl.com", "naveT23LMN");
+			LoginUtility.performLogin(driver, "naveen.n", "");
 		}
 
 		TimeTrackerPage timeObj = new TimeTrackerPage(driver);
@@ -45,7 +45,6 @@ public class TC_02_AddTimeSheet extends BaseClass {
 			return;
 		}
 
-		System.out.println("\nHeader: Task | Start Time | End Time | Project");
 		System.out.println("----------------------------------------------");
 		int rowCount = 1;
 		TimeTrackerPage timeObj = new TimeTrackerPage(driver);
@@ -56,17 +55,21 @@ public class TC_02_AddTimeSheet extends BaseClass {
 			String endTime = rowData[1];
 			String project = rowData[2];
 			String task = rowData[3];
+			String date = rowData[4];
 			// Skip if essential data is missing
-			if (task.isEmpty() || startTime.isEmpty() || endTime.isEmpty()) {
+			if (task.isEmpty() || startTime.isEmpty() || endTime.isEmpty() || date.isEmpty()) {
 				System.out.println("Row " + rowCount + ": SKIPPED (Missing essential data)");
 				rowCount++;
 				continue;
 			}
 			System.out.println(task);
+			System.out.println(date);
+			System.out.println(startTime + " " + endTime);
+			
 			timeObj.enterTaskWorkedOn(task);
 			timeObj.selectProject(project);
 			timeObj.enterStartAndEndTime(startTime, endTime);
-			timeObj.selectDate("25/08/2025");
+			timeObj.selectDate(date);
 			timeObj.clickAddBtn();
 			
 			try {
