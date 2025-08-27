@@ -1,6 +1,5 @@
 package me.clockify.app.pages;
 
-import java.awt.RenderingHints.Key;
 import java.time.Duration;
 
 import org.openqa.selenium.By;
@@ -34,12 +33,16 @@ public class TimeTrackerPage extends BasePage {
 	WebElement dateInput;
 	@FindBy(xpath = "//div[@data-cy='add-btn']")
 	WebElement addEntryButton;
+	@FindBy(css = "div#toast-container")
+	WebElement snackBarToast;
 
 	public void navigateToTimeTrackerPage() {
 		timeTrackerNavigateMenu.click();
 	}
 
 	public void enterTaskWorkedOn(String taskWorked) {
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+		wait.until(ExpectedConditions.elementToBeClickable(workedOnTasksInputBox)).click();
 		workedOnTasksInputBox.sendKeys(taskWorked);
 	}
 
@@ -51,10 +54,15 @@ public class TimeTrackerPage extends BasePage {
 		Actions actions = new Actions(driver);
 
 		actions.moveToElement(taskStartTimeInputBox).click().perform();
-
+		taskStartTimeInputBox.sendKeys(Keys.CONTROL + "a"); // Select all text
+		taskStartTimeInputBox.sendKeys(Keys.DELETE); // Clear the selection
 		taskStartTimeInputBox.sendKeys(start);
+
 		actions.moveToElement(taskEndTimeInputBox).click().perform();
+		taskEndTimeInputBox.sendKeys(Keys.CONTROL + "a");
+		taskEndTimeInputBox.sendKeys(Keys.DELETE);
 		taskEndTimeInputBox.sendKeys(end + Keys.ENTER);
+
 	}
 
 	public void selectProject(String projectName) {
@@ -67,12 +75,17 @@ public class TimeTrackerPage extends BasePage {
 	}
 
 	public void selectDate(String date) {
-		dateInput.clear();
+		Actions actions = new Actions(driver);
+		actions.moveToElement(dateInput).click().perform();
+		dateInput.sendKeys(Keys.CONTROL + "a"); // Select all text
+		dateInput.sendKeys(Keys.DELETE); // Clear the selection
 		dateInput.sendKeys(date);
 	}
 
 	public void clickAddBtn() {
 		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 		wait.until(ExpectedConditions.elementToBeClickable(addEntryButton)).click();
+		wait.until(ExpectedConditions.visibilityOf(snackBarToast));
+		wait.until(ExpectedConditions.invisibilityOf(snackBarToast));
 	}
 }

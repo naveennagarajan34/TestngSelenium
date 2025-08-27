@@ -2,6 +2,7 @@ package me.clockify.app.utilities;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -40,12 +41,12 @@ public class ExcelUtility {
 
 			while (rowIterator.hasNext()) {
 				Row row = rowIterator.next();
-				String[] rowData = new String[4]; // task, startTime, endTime, project
+				String[] rowData = new String[5]; // task, startTime, endTime, project
 				boolean isEmptyRow = true;
 
-				for (int i = 0; i < 4; i++) {
+				for (int i = 0; i < 5; i++) {
 					Cell cell = row.getCell(i, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK);
-					String cellValue = getCellValueAsString(cell);
+					String cellValue = getCellValueAsString(cell, i);
 
 					if (!cellValue.trim().isEmpty()) {
 						isEmptyRow = false;
@@ -68,7 +69,9 @@ public class ExcelUtility {
 		return data;
 	}
 
-	private static String getCellValueAsString(Cell cell) {
+	private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
+	private static String getCellValueAsString(Cell cell, int columnIndex) {
 		if (cell == null || cell.getCellType() == CellType.BLANK) {
 			return "";
 		}
@@ -76,16 +79,27 @@ public class ExcelUtility {
 		switch (cell.getCellType()) {
 		case STRING:
 			return cell.getStringCellValue().trim();
+
 		case NUMERIC:
 			if (DateUtil.isCellDateFormatted(cell)) {
-				return cell.getLocalDateTimeCellValue().toLocalTime().toString();
-			} else {
-				return String.valueOf((int) cell.getNumericCellValue());
+				if (columnIndex == 0 || columnIndex == 1) {
+					// Start / End time columns → keep as HH:mm
+					java.time.LocalTime time = cell.getLocalDateTimeCellValue().toLocalTime();
+					return time.format(DateTimeFormatter.ofPattern("HH:mm"));
+				} else if (columnIndex == 4) {
+					// Date column → force dd/MM/yyyy
+					java.time.LocalDate date = cell.getLocalDateTimeCellValue().toLocalDate();
+					return date.format(DATE_FORMATTER); // e.g. "11/08/2025"
+				}
 			}
+			return String.valueOf(cell.getNumericCellValue());
+
 		case BOOLEAN:
 			return String.valueOf(cell.getBooleanCellValue());
+
 		default:
 			return "";
 		}
 	}
+
 }
